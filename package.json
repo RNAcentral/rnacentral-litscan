@@ -1,0 +1,73 @@
+{
+  "name": "@rnacentral/rnacentral-litscan",
+  "version": "1.0.0",
+  "description": "The widget that automatically connects RNAcentral with literature",
+  "scripts": {
+    "clean": "rm -rf dist/*",
+    "build:prod": "node_modules/.bin/webpack --mode production",
+    "build": "npm run clean && npm run build:prod",
+    "profile:build": "node_modules/.bin/webpack --mode production --profile --json > webpack-stats.json",
+    "serve": "node_modules/.bin/webpack-dev-server --mode development --progress --color --history-api-fallback",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RNAcentral/rnacentral-litscan.git"
+  },
+  "keywords": [
+    "RNA",
+    "bioinformatics",
+    "Europe PMC",
+    "EBI Search",
+    "articles"
+  ],
+  "contributors": [
+    {
+      "name": "Anton I. Petrov",
+      "email": "apetrov@ebi.ac.uk"
+    },
+    {
+      "name": "Blake Sweeney",
+      "email": "bsweeney@ebi.ac.uk"
+    },
+    {
+      "name": "Carlos E. Ribas",
+      "email": "cribas@ebi.ac.uk"
+    }
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/RNAcentral/rnacentral-litscan/issues"
+  },
+  "homepage": "https://github.com/RNAcentral/rnacentral-litscan#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.17.0",
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.0.0-rc.0",
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.1",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-react": "^7.14.5",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^6.4.0",
+    "dotenv-webpack": "^7.0.3",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.2",
+    "navigator": "~1.0.1",
+    "node-sass": "^7.0.1",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.2.1",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.1.0"
+  }
+}
