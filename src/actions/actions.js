@@ -118,6 +118,7 @@ export function onSubmitIds(list, order="score:descending") {
 
 export function onToggleFacet(event, facet, facetValue, list) {
   return function (dispatch) {
+    dispatch({ type: types.UPDATE_STATUS });
     dispatch({ type: types.TOGGLE_FACET });
 
     // escape ampersand in URL

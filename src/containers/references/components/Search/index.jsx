@@ -36,7 +36,7 @@ class Search extends React.Component {
         <div className="rna">
           <Row>
             <Col xs={12} sm={12} className="mb-3">
-              <span style={titleStyle}>{titleText} { this.props.status !== "notSubmitted" && this.props.status !== "running" ? <small className="text-muted" style={small}>{this.props.hitCount} total <a className="text-muted" style={{verticalAlign: "10%"}} href="https://rnacentral.org/help/litscan" target="_blank"> <MdHelpOutline /></a></small> : "" }</span>
+              <span style={titleStyle}>{titleText} { this.props.status === "running" ? <span className={`text-muted spinner-border ${fixCss ? '' : 'spinner-border-sm'}`} style={small} role="status" aria-hidden="true"></span> : this.props.status !== "notSubmitted" ? <small className="text-muted" style={small}>{this.props.hitCount} total <a className="text-muted" style={{verticalAlign: "10%"}} href="https://rnacentral.org/help/litscan" target="_blank"> <MdHelpOutline /></a></small> : "" }</span>
             </Col>
           </Row>
           {
