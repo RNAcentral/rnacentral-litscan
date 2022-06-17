@@ -42,11 +42,11 @@ class Facets extends React.Component {
       let idsWithResults = [];
       getFacetIds && Object.entries(getFacetIds).map(([key, value]) => {
         if (key === "facetValues"){
-          idsWithResults = [...idsWithResults, value.map(item => item.label)]
+          idsWithResults = [...idsWithResults, value.map(item => item.label.toLowerCase())]
         }
       })
       idsWithResults = idsWithResults && idsWithResults[0]
-      idsWithNoResults = idsWithResults && this.props.jobIds.filter(item => idsWithResults.indexOf(item) === -1);
+      idsWithNoResults = idsWithResults && this.props.jobIds.filter(item => idsWithResults.indexOf(item.toLowerCase()) === -1);
     }
     return [
       facet.label !== "Title Value" && facet.label !== "Abstract Value" ? <legend key={`legend-${facet.id}`}><span style={facetStyle}>{ this.renameFacet(facet.label) }</span></legend> : "",
