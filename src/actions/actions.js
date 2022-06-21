@@ -146,7 +146,6 @@ export function onToggleFacet(event, facet, facetValue, list) {
     ids = ids.replace(/,/g, '%20OR%20')
 
     // start loading from the first page again
-    console.log(routes.searchIndex(ids, buildQuery(selectedFacets), state.sortField, state.order, 0, state.size));
     return fetch(routes.searchIndex(ids, buildQuery(selectedFacets), state.sortField, state.order, 0, state.size))
       .then((response) => {
         if (response.ok) { return response.json(); }
