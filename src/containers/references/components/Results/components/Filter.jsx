@@ -56,6 +56,7 @@ class Filter extends React.Component {
 function mapStateToProps(state) {
   return {
     jobIds: state.jobIds,
+    filter: state.filter,
   };
 }
 

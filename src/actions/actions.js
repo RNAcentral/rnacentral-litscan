@@ -15,7 +15,7 @@ let buildQuery = function (selectedFacets) {
     if (facetText !== "") outputClauses.push("(" + facetText + ")");
   });
 
-  if (state.filter) { outputClauses.push(" AND (" + state.filter + ")") }
+  if (state.filter) { outputClauses.push("(" + state.filter + ")") }
   outputText = outputClauses.join(" AND ");
   return outputText;
 };
@@ -146,6 +146,7 @@ export function onToggleFacet(event, facet, facetValue, list) {
     ids = ids.replace(/,/g, '%20OR%20')
 
     // start loading from the first page again
+    console.log(routes.searchIndex(ids, buildQuery(selectedFacets), state.sortField, state.order, 0, state.size));
     return fetch(routes.searchIndex(ids, buildQuery(selectedFacets), state.sortField, state.order, 0, state.size))
       .then((response) => {
         if (response.ok) { return response.json(); }
