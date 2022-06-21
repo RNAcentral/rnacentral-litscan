@@ -10,7 +10,8 @@ let initialState = {
   size: 10,
   loadMoreStatus: "",
   sortField: "",
-  order: ""
+  order: "",
+  filter: "",
 };
 
 export default initialState;

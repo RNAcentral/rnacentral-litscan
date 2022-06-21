@@ -1,14 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from 'actions/actions';
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Alert from 'react-bootstrap/Alert'
-import Card from 'react-bootstrap/Card'
-import Badge from "react-bootstrap/Badge";
-import Button from "react-bootstrap/Button";
-
+import { Alert, Badge, Button, Card, Col, Row } from "react-bootstrap";
 import Facets from 'containers/references/components/Results/components/Facets.jsx'
+import Filter from 'containers/references/components/Results/components/Filter.jsx'
 
 
 class Results extends React.Component {
@@ -51,7 +46,10 @@ class Results extends React.Component {
           this.props.status === "success" && [
             <div key="results">
               {
-                this.props.entries && this.props.entries.length ? <Row>
+                this.props.entries && this.props.entries.length || this.props.filter ? <Filter customStyle={ this.props.customStyle } /> : ""
+              }
+              {
+                this.props.entries && this.props.entries.length ? <Row className="mt-3">
                   <Col xs={12} sm={3}>
                     <Facets
                       facets={ this.props.facets }
@@ -60,9 +58,9 @@ class Results extends React.Component {
                       search={this.props.search}
                     />
                   </Col>
-                  <Col xs={12} sm={9} className="border-left">
+                  <Col xs={12} sm={9}>
                     { this.props.entries.map((entry, index) => (
-                      <Card className={`mb-2 border-top-0 border-right-0 border-left-0 ${this.props.entries.length - 1 === index ? 'border-bottom-0' : ''}`} key={`${entry['id']}_${index}`}>
+                      <Card className="mb-2" key={`${entry['id']}_${index}`}>
                         <Card.Body>
                           <Card.Text>
                             <a href={`https://doi.org/${entry.fields.doi[0]}`} target="_blank" style={articleStyle}>{ this.highlights(entry.fields.title[0], entry.fields.job_id[0]) }</a>
@@ -109,15 +107,23 @@ class Results extends React.Component {
                     }
                   </Col>
                 </Row> : this.props.idsNotScanned.length ? <Row>
-                  <Col xs={12} sm={12} className="mb-3">
+                  <Col xs={12} sm={12} className="mt-3">
                     <Alert variant="warning">
                       <p className="text-muted mt-3" style={{fontSize: fixCss}}>
                         {idsNotScanned} {this.props.idsNotScanned.length > 1? "have" : "has"} not yet been scanned by LitScan, but you can try searching in <a href={`https://europepmc.org/search?query=${queryIds}`} target="_blank">Europe PMC</a>
                       </p>
                     </Alert>
                   </Col>
+                </Row> : this.props.filter ? <Row>
+                  <Col xs={12} sm={12} className="mt-3">
+                    <Alert variant="warning">
+                      <p className="text-muted mt-3" style={{fontSize: fixCss}}>
+                        Your search - <strong>{this.props.filter}</strong> - did not match any articles
+                      </p>
+                    </Alert>
+                  </Col>
                 </Row> : <Row>
-                  <Col xs={12} sm={12} className="mb-3">
+                  <Col xs={12} sm={12} className="mt-3">
                     <Alert variant="warning">
                       <p className="text-muted mt-3" style={{fontSize: fixCss}}>
                         No open access articles were found. Try searching the latest literature in <a href={`https://europepmc.org/search?query=${queryIds}`} target="_blank">Europe PMC</a>
@@ -157,6 +163,7 @@ function mapStateToProps(state) {
     facets: state.facets,
     selectedFacets: state.selectedFacets,
     loadMoreStatus: state.loadMoreStatus,
+    filter: state.filter,
   };
 }
 

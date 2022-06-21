@@ -15,7 +15,7 @@ let buildQuery = function (selectedFacets) {
     if (facetText !== "") outputClauses.push("(" + facetText + ")");
   });
 
-  if (state.filter) { outputClauses.push("(" + state.filter + ")") }
+  if (state.filter) { outputClauses.push(" AND (" + state.filter + ")") }
   outputText = outputClauses.join(" AND ");
   return outputText;
 };
@@ -189,4 +189,8 @@ export function onLoadMore(list) {
     })
     .catch(error => dispatch({type: types.LOAD_MORE, loadMoreStatus: 'error'}));
   }
+}
+
+export function onFilterChange(value) {
+  return {type: types.FILTER_CHANGE, data: value}
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
 import * as actionCreators from 'actions/actions';
-import Form from "react-bootstrap/Form";
 import Row from 'react-bootstrap/Row'
 
 
@@ -84,18 +83,11 @@ class Facets extends React.Component {
     const fixCss = this.props.customStyle && this.props.customStyle.fixCss && this.props.customStyle.fixCss === "true" ? "1.5rem" : "";
     const hideRnacentral = !!(this.props.customStyle && this.props.customStyle.hideRnacentral);
     const linkColor = this.props.customStyle && this.props.customStyle.linkColor ? this.props.customStyle.linkColor : "#337ab7";
-    let facetMargin = { paddingTop: "1.25rem" }
 
     return (
       <Row>
         <section>
-          <Form.Select style={{fontSize: fixCss}} onChange={(e) => { this.props.onSort(this.props.jobIds, e.target.value) }}>
-            <option value="score:descending">Sort by score - default</option>
-            <option value="cited_by:descending">Sort by citation</option>
-            <option value="year:descending">Sort by year (descending)</option>
-            <option value="year:ascending">Sort by year (ascending)</option>
-          </Form.Select>
-          <div style={facetMargin}>
+          <div>
             { this.props.facets.map(facet => this.renderFacet(facet)) }
           </div>
           <small>

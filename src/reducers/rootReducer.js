@@ -52,6 +52,9 @@ const rootReducer = function (state = initialState, action) {
           return newState;
       }
 
+    case actions.FILTER_CHANGE:
+      return Object.assign({}, state, {filter: action.data});
+
     default:
       return state;
   }

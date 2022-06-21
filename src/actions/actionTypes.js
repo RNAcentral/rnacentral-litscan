@@ -4,3 +4,4 @@ export const LOAD_MORE = 'LOAD_MORE';
 export const RESULTS = 'RESULTS';
 export const TOGGLE_FACET = 'TOGGLE_FACET';
 export const UPDATE_STATUS = 'UPDATE_STATUS';
+export const FILTER_CHANGE = 'FILTER_CHANGE';
