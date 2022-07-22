@@ -1,6 +1,6 @@
 {
   "name": "@rnacentral/rnacentral-litscan",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The widget that automatically connects RNAcentral with literature",
   "scripts": {
     "clean": "rm -rf dist/*",

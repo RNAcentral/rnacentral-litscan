@@ -22,6 +22,7 @@ class References extends React.Component {
           key={`results`}
           customStyle={this.props.customStyle}
           search={this.props.search}
+          database={this.props.database}
       />
     ]
   }

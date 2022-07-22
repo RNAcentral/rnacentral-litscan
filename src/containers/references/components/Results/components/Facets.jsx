@@ -11,10 +11,12 @@ class Facets extends React.Component {
   }
 
   renameFacet(facet){
-    if (facet==='Body Value') {
+    if (facet==='Title Value') {
       return 'Paper section'
     } else if (facet==='Job ID') {
       return 'Keyword'
+    } else if (facet==='Manually annotated') {
+      return 'Featured'
     } else {
       return facet
     }
@@ -25,10 +27,12 @@ class Facets extends React.Component {
     if (facet==='title_value') { facetValue.label = 'Title' }
     if (facet==='abstract_value') { facetValue.label = 'Abstract' }
     if (facet==='body_value') { facetValue.label = 'Main text' }
+    if (/^URS/.test(facetValue.label) && this.props.jobIds.indexOf(facetValue.label) > -1) { facetValue.label = 'Manually annotated' }
     return <a style={{color: linkColor, cursor: 'pointer'}}>{facetValue.label}&nbsp;<small>({facetValue.count})</small></a>
   }
 
   renderFacet(facet) {
+    const database = this.props.database && this.props.database.name ? this.props.database.name : "";
     let facetStyle = {
       color: this.props.customStyle && this.props.customStyle.facetColor ? this.props.customStyle.facetColor : "#BF8E3E",
       fontSize: this.props.customStyle && this.props.customStyle.facetSize ? this.props.customStyle.facetSize : "24px",
@@ -48,8 +52,8 @@ class Facets extends React.Component {
       idsWithNoResults = idsWithResults && this.props.jobIds.filter(item => idsWithResults.indexOf(item.toLowerCase()) === -1);
     }
     return [
-      facet.label !== "Title Value" && facet.label !== "Abstract Value" ? <legend key={`legend-${facet.id}`}><span style={facetStyle}>{ this.renameFacet(facet.label) }</span></legend> : "",
-      <ul key={facet.id} className="list-unstyled" style={{overflow: "auto", maxHeight: "15em", marginTop: "-10px"}}>
+      facet.label !== "Abstract Value" && facet.label !== "Body Value" ? <legend key={`legend-${facet.id}`} className={`${!database && facet.label === "Manually annotated" ? 'd-none' : ''}`}><span style={facetStyle}>{ this.renameFacet(facet.label) }</span></legend> : "",
+      <ul key={facet.id} className={`list-unstyled ${!database && facet.label === "Manually annotated" ? 'd-none' : ''}`} style={{overflow: "auto", maxHeight: "15em", marginTop: "-10px"}}>
         {
           facet.facetValues.map(facetValue => (
             facetValue.value !== "False" ? <li style={ liStyle } key={`li ${facetValue.label}`}>

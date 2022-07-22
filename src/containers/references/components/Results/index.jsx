@@ -4,21 +4,35 @@ import * as actionCreators from 'actions/actions';
 import { Alert, Badge, Button, Card, Col, Row } from "react-bootstrap";
 import Facets from 'containers/references/components/Results/components/Facets.jsx'
 import Filter from 'containers/references/components/Results/components/Filter.jsx'
+import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 
 
 class Results extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { showAbstract: {} }
+    this.toggleAbstract = this.toggleAbstract.bind(this);
   }
 
-  // Highlight text matching the jobId
+  // Highlight jobId
   highlights(sentence, jobId){
     let parts = sentence.split(new RegExp(`(${jobId})`, 'gi'));
-    return <span> { parts.map((part, i) =>
+    return <span style={{ lineHeight: '150%' }}> { parts.map((part, i) =>
         <span key={i} style={part.toLowerCase() === jobId.toLowerCase() ? { fontWeight: 'bold', backgroundColor: '#FFFF99' } : {} }>
             { part }
         </span>)
     } </span>;
+  }
+
+  // Show/Hide abstract
+  toggleAbstract(entryId) {
+    this.setState((prevState) => ({
+      ...prevState,
+      showAbstract: {
+        ...prevState.showAbstract,
+        [entryId]: !prevState.showAbstract[entryId]
+      }
+    }));
   }
 
   render() {
@@ -56,6 +70,7 @@ class Results extends React.Component {
                       selectedFacets={ this.props.selectedFacets }
                       customStyle={ this.props.customStyle }
                       search={this.props.search}
+                      database={this.props.database}
                     />
                   </Col>
                   <Col xs={12} sm={9}>
@@ -78,21 +93,26 @@ class Results extends React.Component {
                           <Card.Text>
                             <i>
                               {
-                                'abstract_value' in this.props.selectedFacets && entry.fields.abstract[0] ? this.highlights(entry.fields.abstract[0], entry.fields.job_id[0])
-                                : 'body_value' in this.props.selectedFacets && entry.fields.body[0] ? this.highlights(entry.fields.body[0], entry.fields.job_id[0])
-                                : entry.fields.abstract[0] ? this.highlights(entry.fields.abstract[0], entry.fields.job_id[0])
-                                : entry.fields.body[0] ? this.highlights(entry.fields.body[0], entry.fields.job_id[0])
+                                'abstract_value' in this.props.selectedFacets && entry.fields.abstract_sentence[0] ? this.highlights(entry.fields.abstract_sentence[0], entry.fields.job_id[0])
+                                : 'body_value' in this.props.selectedFacets && entry.fields.body_sentence[0] ? this.highlights(entry.fields.body_sentence[0], entry.fields.job_id[0])
+                                : entry.fields.abstract_sentence[0] ? this.highlights(entry.fields.abstract_sentence[0], entry.fields.job_id[0])
+                                : entry.fields.body_sentence[0] ? this.highlights(entry.fields.body_sentence[0], entry.fields.job_id[0])
                                 : ""
                               }</i>&nbsp;&nbsp;
                             <Badge bg="secondary">
                               {
-                                'abstract_value' in this.props.selectedFacets && entry.fields.abstract[0] ? "Abstract"
-                                : 'body_value' in this.props.selectedFacets && entry.fields.body[0] ? "Main text"
-                                : entry.fields.abstract[0] ? "Abstract"
-                                : entry.fields.body[0] ? "Main text"
+                                'abstract_value' in this.props.selectedFacets && entry.fields.abstract_sentence[0] ? "Abstract"
+                                : 'body_value' in this.props.selectedFacets && entry.fields.body_sentence[0] ? "Main text"
+                                : entry.fields.abstract_sentence[0] ? "Abstract"
+                                : entry.fields.body_sentence[0] ? "Main text"
                                 : ""
                               }
                             </Badge>
+                            <br/><br/>
+                            <a style={linkStyle} className="mt-5" key={`abstract_${entry['id']}_${index}`} onClick={() => this.toggleAbstract(entry['id'])}>
+                              { this.state.showAbstract[entry['id']] ? <span><MdExpandLess /> Hide abstract</span> : <span><MdExpandMore /> View abstract</span> }
+                            </a>
+                            { this.state.showAbstract[entry['id']] ? <span><br/><br/>{this.highlights(entry.fields.abstract[0], entry.fields.job_id[0])}</span> : '' }
                           </Card.Text>
                         </Card.Body>
                       </Card>
