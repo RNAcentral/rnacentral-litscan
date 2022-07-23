@@ -27,7 +27,7 @@ class Facets extends React.Component {
     if (facet==='title_value') { facetValue.label = 'Title' }
     if (facet==='abstract_value') { facetValue.label = 'Abstract' }
     if (facet==='body_value') { facetValue.label = 'Main text' }
-    if (/^URS/.test(facetValue.label) && this.props.jobIds.indexOf(facetValue.label) > -1) { facetValue.label = 'Manually annotated' }
+    if (facet==='manually_annotated' && /^URS/.test(facetValue.label) && this.props.jobIds.indexOf(facetValue.label) > -1) { facetValue.label = 'Manually annotated' }
     return <a style={{color: linkColor, cursor: 'pointer'}}>{facetValue.label}&nbsp;<small>({facetValue.count})</small></a>
   }
 
