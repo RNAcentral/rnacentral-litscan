@@ -74,7 +74,9 @@ class Facets extends React.Component {
           idsWithNoResults && facet.label === "Job ID" ? idsWithNoResults.map(item => <li style={ liStyle } key={`li ${item}`}>
             <div className="form-check">
               <input className="form-check-input" id={`checkbox-${item}`} type="checkbox" disabled/>
-              <label className="form-check-label mt-1" htmlFor={`checkbox-${item}`}>{item} <small>(0)</small></label>
+              <label className="form-check-label mt-1" htmlFor={`checkbox-${item}`}>
+                {item.startsWith('ens') ? item.toUpperCase() : item } <small>(0)</small>
+              </label>
             </div>
           </li>) : ""
         }
