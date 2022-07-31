@@ -32,7 +32,7 @@ class Facets extends React.Component {
   }
 
   renderFacet(facet) {
-    const database = this.props.database && this.props.database.name ? this.props.database.name : "";
+    const database = this.props.database && this.props.database.name ? this.props.database.name.toLowerCase() : "";
     let facetStyle = {
       color: this.props.customStyle && this.props.customStyle.facetColor ? this.props.customStyle.facetColor : "#BF8E3E",
       fontSize: this.props.customStyle && this.props.customStyle.facetSize ? this.props.customStyle.facetSize : "24px",
@@ -52,8 +52,8 @@ class Facets extends React.Component {
       idsWithNoResults = idsWithResults && this.props.jobIds.filter(item => idsWithResults.indexOf(item.toLowerCase()) === -1);
     }
     return [
-      facet.label !== "Abstract Value" && facet.label !== "Body Value" ? <legend key={`legend-${facet.id}`} className={`${!database && facet.label === "Manually annotated" ? 'd-none' : ''}`}><span style={facetStyle}>{ this.renameFacet(facet.label) }</span></legend> : "",
-      <ul key={facet.id} className={`list-unstyled ${!database && facet.label === "Manually annotated" ? 'd-none' : ''}`} style={{overflow: "auto", maxHeight: "15em", marginTop: "-10px"}}>
+      facet.label !== "Abstract Value" && facet.label !== "Body Value" ? <legend key={`legend-${facet.id}`} className={`${database!=='rnacentral' && facet.label === "Manually annotated" ? 'd-none' : ''}`}><span style={facetStyle}>{ this.renameFacet(facet.label) }</span></legend> : "",
+      <ul key={facet.id} className={`list-unstyled ${database!=='rnacentral' && facet.label === "Manually annotated" ? 'd-none' : ''}`} style={{overflow: "auto", maxHeight: "15em", marginTop: "-10px"}}>
         {
           facet.facetValues.map(facetValue => (
             facetValue.value !== "False" ? <li style={ liStyle } key={`li ${facetValue.label}`}>
