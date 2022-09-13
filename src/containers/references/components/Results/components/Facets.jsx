@@ -39,6 +39,9 @@ class Facets extends React.Component {
       fontFamily: "'HelveticaNeueLT Pro','Helvetica Neue',Helvetica,Arial,sans-serif"
     };
     let liStyle = { whiteSpace: "nowrap" }
+
+    // create a list of IDs with no associated articles
+    // we want to show all ids in facet
     let idsWithNoResults = ""
     if (facet.label === "Job ID") {
       const getFacetIds = this.props.facets && this.props.facets.find(item => item.id === "job_id");
@@ -51,9 +54,21 @@ class Facets extends React.Component {
       idsWithResults = idsWithResults && idsWithResults[0]
       idsWithNoResults = idsWithResults && this.props.jobIds.filter(item => idsWithResults.indexOf(item.toLowerCase()) === -1);
     }
+
+    // if there are articles that were manually annotated, check whether they refer to the URS accessed
+    // we do not want to show the Featured facet for the wrong URS
+    let hideFeaturedFacet = false;
+    let manuallyAnnotated = [];
+    if (database==='rnacentral' && facet.label === "Manually annotated"){
+      const urs = this.props.jobIds.find(element => element.startsWith("URS"));
+      facet.facetValues.map(facetValue => (manuallyAnnotated = [...manuallyAnnotated, facetValue.label]))
+      if (!manuallyAnnotated.includes(urs)){
+        hideFeaturedFacet = true
+      }
+    }
     return [
-      facet.label !== "Abstract Value" && facet.label !== "Body Value" ? <legend key={`legend-${facet.id}`} className={`${database!=='rnacentral' && facet.label === "Manually annotated" ? 'd-none' : ''}`}><span style={facetStyle}>{ this.renameFacet(facet.label) }</span></legend> : "",
-      <ul key={facet.id} className={`list-unstyled ${database!=='rnacentral' && facet.label === "Manually annotated" ? 'd-none' : ''}`} style={{overflow: "auto", maxHeight: "15em", marginTop: "-10px"}}>
+      facet.label !== "Abstract Value" && facet.label !== "Body Value" ? <legend key={`legend-${facet.id}`} className={`${database!=='rnacentral' && facet.label === "Manually annotated" ? 'd-none' : database==='rnacentral' && hideFeaturedFacet ? 'd-none': '' }`}><span style={facetStyle}>{ this.renameFacet(facet.label) }</span></legend> : "",
+      <ul key={facet.id} className={`list-unstyled ${database!=='rnacentral' && facet.label === "Manually annotated" ? 'd-none' : database==='rnacentral' && hideFeaturedFacet ? 'd-none' : ''}`} style={{overflow: "auto", maxHeight: "15em", marginTop: "-10px"}}>
         {
           facet.facetValues.map(facetValue => (
             facetValue.value !== "False" ? <li style={ liStyle } key={`li ${facetValue.label}`}>
@@ -86,7 +101,6 @@ class Facets extends React.Component {
   }
 
   render() {
-    const fixCss = this.props.customStyle && this.props.customStyle.fixCss && this.props.customStyle.fixCss === "true" ? "1.5rem" : "";
     const hideRnacentral = !!(this.props.customStyle && this.props.customStyle.hideRnacentral);
     const linkColor = this.props.customStyle && this.props.customStyle.linkColor ? this.props.customStyle.linkColor : "#337ab7";
 
