@@ -27,7 +27,7 @@ class Facets extends React.Component {
     if (facet==='title_value') { facetValue.label = 'Title' }
     if (facet==='abstract_value') { facetValue.label = 'Abstract' }
     if (facet==='body_value') { facetValue.label = 'Main text' }
-    if (facet==='manually_annotated' && /^URS/.test(facetValue.label) && this.props.jobIds.indexOf(facetValue.label) > -1) { facetValue.label = 'Manually annotated' }
+    if (facet==='manually_annotated' && /^URS/.test(facetValue.label) && this.props.jobIds.find(id => id.toLowerCase() === facetValue.label.toLowerCase())) { facetValue.label = 'Manually annotated' }
     return <a style={{color: linkColor, cursor: 'pointer'}}>{facetValue.label}&nbsp;<small>({facetValue.count})</small></a>
   }
 
@@ -60,8 +60,8 @@ class Facets extends React.Component {
     let hideFeaturedFacet = false;
     let manuallyAnnotated = [];
     if (database==='rnacentral' && facet.label === "Manually annotated"){
-      const urs = this.props.jobIds.find(element => element.startsWith("URS"));
-      facet.facetValues.map(facetValue => (manuallyAnnotated = [...manuallyAnnotated, facetValue.label]))
+      const urs = this.props.jobIds.find(element => element.toLowerCase().startsWith("urs")).toLowerCase();
+      facet.facetValues.map(facetValue => (manuallyAnnotated = [...manuallyAnnotated, facetValue.label.toLowerCase()]))
       if (!manuallyAnnotated.includes(urs)){
         hideFeaturedFacet = true
       }
@@ -71,7 +71,7 @@ class Facets extends React.Component {
       <ul key={facet.id} className={`list-unstyled ${database!=='rnacentral' && facet.label === "Manually annotated" ? 'd-none' : database==='rnacentral' && hideFeaturedFacet ? 'd-none' : ''}`} style={{overflow: "auto", maxHeight: "15em", marginTop: "-10px"}}>
         {
           facet.facetValues.map(facetValue => (
-            facetValue.value !== "False" ? <li style={ liStyle } key={`li ${facetValue.label}`}>
+            facetValue.value !== "False" ? <li style={ liStyle } key={`li ${facetValue.label}`} className={`${facet.label==='Manually annotated' && !this.props.jobIds.find(id => id.toLowerCase() === facetValue.label.toLowerCase()) ? 'd-none': ''}`}>
               <div className="form-check">
                 <input className="form-check-input" id={`checkbox-${facet.id}-${facetValue.value}`} type="checkbox"
                   defaultChecked={this.props.selectedFacets.hasOwnProperty(facet.id) && this.props.selectedFacets[facet.id].indexOf(facetValue.value) !== -1}
