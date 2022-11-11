@@ -38,6 +38,7 @@ class Facets extends React.Component {
       fontSize: this.props.customStyle && this.props.customStyle.facetSize ? this.props.customStyle.facetSize : "24px",
       fontFamily: "'HelveticaNeueLT Pro','Helvetica Neue',Helvetica,Arial,sans-serif"
     };
+    let ulStyle = { overflow: "auto", maxHeight: "15em", marginTop: "-10px" }
     let liStyle = { whiteSpace: "nowrap" }
 
     // create a list of IDs with no associated articles
@@ -55,23 +56,16 @@ class Facets extends React.Component {
       idsWithNoResults = idsWithResults && this.props.jobIds.filter(item => idsWithResults.indexOf(item.toLowerCase()) === -1);
     }
 
-    // if there are articles that were manually annotated, check whether they refer to the URS accessed
-    // we do not want to show the Featured facet for the wrong URS
-    let hideFeaturedFacet = false;
-    let manuallyAnnotated = [];
-    if (database==='rnacentral' && facet.label === "Manually annotated"){
-      const urs = this.props.jobIds.find(element => element.toLowerCase().startsWith("urs")).toLowerCase();
-      facet.facetValues.map(facetValue => (manuallyAnnotated = [...manuallyAnnotated, facetValue.label.toLowerCase()]))
-      if (!manuallyAnnotated.includes(urs)){
-        hideFeaturedFacet = true
-      }
-    }
     return [
-      facet.label !== "Abstract Value" && facet.label !== "Body Value" ? <legend key={`legend-${facet.id}`} className={`${database!=='rnacentral' && facet.label === "Manually annotated" ? 'd-none' : database==='rnacentral' && hideFeaturedFacet ? 'd-none': '' }`}><span style={facetStyle}>{ this.renameFacet(facet.label) }</span></legend> : "",
-      <ul key={facet.id} className={`list-unstyled ${database!=='rnacentral' && facet.label === "Manually annotated" ? 'd-none' : database==='rnacentral' && hideFeaturedFacet ? 'd-none' : ''}`} style={{overflow: "auto", maxHeight: "15em", marginTop: "-10px"}}>
+      facet.label === "Title Value" || facet.label === "Year"
+      || facet.label === "Journal" || facet.label === "Job ID"
+      || (database === "rnacentral" && facet.label === "Manually annotated") ? <legend key={`legend-${facet.id}`}>
+        <span style={facetStyle}>{ this.renameFacet(facet.label) }</span>
+      </legend> : "",
+      <ul key={facet.id} className={`list-unstyled ${database !== "rnacentral" && facet.label === "Manually annotated" ? "d-none" : ""}`} style={ ulStyle }>
         {
           facet.facetValues.map(facetValue => (
-            facetValue.value !== "False" ? <li style={ liStyle } key={`li ${facetValue.label}`} className={`${facet.label==='Manually annotated' && !this.props.jobIds.find(id => id.toLowerCase() === facetValue.label.toLowerCase()) ? 'd-none': ''}`}>
+            facetValue.value !== "False" ? <li style={ liStyle } key={`li ${facetValue.label}`} className={`${facet.label === "Manually annotated" && !this.props.jobIds.some(id => id.toLowerCase() === facetValue.value.toLowerCase()) ? "d-none" : ""}`}>
               <div className="form-check">
                 <input className="form-check-input" id={`checkbox-${facet.id}-${facetValue.value}`} type="checkbox"
                   defaultChecked={this.props.selectedFacets.hasOwnProperty(facet.id) && this.props.selectedFacets[facet.id].indexOf(facetValue.value) !== -1}
