@@ -56,10 +56,18 @@ class Facets extends React.Component {
       idsWithNoResults = idsWithResults && this.props.jobIds.filter(item => idsWithResults.indexOf(item.toLowerCase()) === -1);
     }
 
+    // check for manually annotated articles
+    let showFeaturedLabel = false
+    if (database === "rnacentral" && facet.label === "Manually annotated" && showFeaturedLabel === false) {
+      if (facet.facetValues.some((facetItem) => this.props.jobIds.some((jobId) => jobId.toLowerCase() === facetItem.value.toLowerCase()))){
+        showFeaturedLabel = true
+      }
+    }
+
     return [
       facet.label === "Title Value" || facet.label === "Year"
       || facet.label === "Journal" || facet.label === "Job ID"
-      || (database === "rnacentral" && facet.label === "Manually annotated") ? <legend key={`legend-${facet.id}`}>
+      || (database === "rnacentral" && facet.label === "Manually annotated" && showFeaturedLabel) ? <legend key={`legend-${facet.id}`}>
         <span style={facetStyle}>{ this.renameFacet(facet.label) }</span>
       </legend> : "",
       <ul key={facet.id} className={`list-unstyled ${database !== "rnacentral" && facet.label === "Manually annotated" ? "d-none" : ""}`} style={ ulStyle }>
