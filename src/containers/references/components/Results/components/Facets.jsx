@@ -65,8 +65,11 @@ class Facets extends React.Component {
     }
 
     return [
-      facet.label === "Title Value" || facet.label === "Year"
-      || facet.label === "Journal" || facet.label === "Job ID"
+      facet.label === "Title Value"
+      || facet.label === "Year"
+      || facet.label === "Journal"
+      || facet.label === "Job ID"
+      || facet.label === "Organism"
       || (database === "rnacentral" && facet.label === "Manually annotated" && showFeaturedLabel) ? <legend key={`legend-${facet.id}`}>
         <span style={facetStyle}>{ this.renameFacet(facet.label) }</span>
       </legend> : "",
