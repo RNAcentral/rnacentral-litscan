@@ -17,6 +17,8 @@ class Facets extends React.Component {
       return 'Keyword'
     } else if (facet==='Manually annotated') {
       return 'Featured'
+    } else if (facet==='Type') {
+      return 'Article type'
     } else {
       return facet
     }
@@ -70,6 +72,7 @@ class Facets extends React.Component {
       || facet.label === "Journal"
       || facet.label === "Job ID"
       || facet.label === "Organism"
+      || facet.label === "Type"
       || (database === "rnacentral" && facet.label === "Manually annotated" && showFeaturedLabel) ? <legend key={`legend-${facet.id}`}>
         <span style={facetStyle}>{ this.renameFacet(facet.label) }</span>
       </legend> : "",
