@@ -19,6 +19,8 @@ class Facets extends React.Component {
       return 'Featured'
     } else if (facet==='Type') {
       return 'Article type'
+    } else if (facet==='Organism') {
+      return 'Mentioned Organism'
     } else {
       return facet
     }
