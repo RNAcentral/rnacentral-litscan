@@ -1,5 +1,5 @@
 let ebiDevOrProd = process.env.INDEX === 'dev' ? 'wwwdev' : 'www';
-let facetFields = 'title_value,abstract_value,body_value,journal,year,job_id,manually_annotated';
+let facetFields = 'title_value,abstract_value,body_value,journal,year,job_id,manually_annotated,organism,type';
 let fields = 'job_id,title,abstract,abstract_sentence,body_sentence,author,doi,year,journal,pmid,pmcid,cited_by';
 
 module.exports = {
